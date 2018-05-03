@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+ 
+<tiles-definitions> 
+	<definition name="admin-base" template="/WEB-INF/layouts/admin/default.jsp">  
+       <put-attribute name="title" value="Dashboard" />  
+       <put-attribute name="header" value="/WEB-INF/layouts/admin/header.jsp" />  
+       <put-attribute name="menu" value="/WEB-INF/layouts/admin/menu.jsp" />  
+       <put-attribute name="body" value="" />  
+       <put-attribute name="footer" value="/WEB-INF/layouts/admin/footer.jsp" />  
+   </definition>  
+
+	 <definition name="index" extends="admin-base">  
+       <put-attribute name="title" value="Dashboard" />  
+       <put-attribute name="body" value="/WEB-INF/admin/Index.jsp" />  
+   </definition>  
+   
+   <definition name="company" extends="admin-base">  
+       <put-attribute name="title" value="Dashboard" />  
+       <put-attribute name="body" value="/WEB-INF/admin/Company.jsp" />  
+   </definition> 
+   <definition name="type" extends="admin-base">  
+       <put-attribute name="title" value="Dashboard" />  
+       <put-attribute name="body" value="/WEB-INF/admin/Type.jsp" />  
+   </definition> 
+   <definition  name="operator" extends="admin-base">  
+       <put-attribute name="title" value="Dashboard" />  
+       <put-attribute name="body" value="/WEB-INF/admin/Operator.jsp" />  
+   </definition>
+   <definition  name="unit" extends="admin-base">  
+       <put-attribute name="title" value="Dashboard" />  
+       <put-attribute name="body" value="/WEB-INF/admin/Unit.jsp" />  
+   </definition> 
+   <definition name="medicine" extends="admin-base">  
+       <put-attribute name="title" value="Dashboard" />  
+       <put-attribute name="body" value="/WEB-INF/admin/Medicine.jsp" />  
+   </definition> 
+   <definition  name="medicinelist" extends="admin-base">  
+       <put-attribute name="title" value="Dashboard" />  
+       <put-attribute name="body" value="/WEB-INF/admin/MedicineList.jsp" />  
+   </definition> 
+   <definition  name="operatordashboard" extends="admin-base">  
+       <put-attribute name="title" value="Dashboard" />  
+       <put-attribute name="body" value="/WEB-INF/admin/Dashboard.jsp" />  
+   </definition> 
+</tiles-definitions>

@@ -37,7 +37,7 @@ public class RestAuthenticationSecurityConfiguration extends WebSecurityConfigur
 	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/**").permitAll()
+        http.authorizeRequests().antMatchers("/api/login","/api/register","/api/images/**").permitAll()
                     .anyRequest().authenticated();
             
         http.authorizeRequests().antMatchers("/api/**").hasAnyRole().and().httpBasic().authenticationEntryPoint(restAuthentication());

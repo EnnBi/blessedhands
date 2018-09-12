@@ -14,9 +14,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.medico.dao.UserDao;
+import com.example.medico.model.Role;
 import com.example.medico.model.User;
 @Service
-public class UserDetailServiceImpl implements UserDetailsService {
+public class MyUserDetailService implements UserDetailsService {
 
 	@Autowired
 	UserDao userDao;
@@ -28,7 +29,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		User user = userDao.findByEmail(email);
 		System.err.println(user.getPassword());
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-		grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+		for(Role role:user.getRoles())
+			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 		
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);	
      }

@@ -1,20 +1,31 @@
 package com.example.medico.model;
 
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="User")
-public class User {
+public class User implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id@GeneratedValue(strategy=GenerationType.AUTO)
 	long id;
@@ -38,12 +49,30 @@ public class User {
 	@Column(name="Enabled")
 	boolean enabled;
 	
-	@JoinColumn(name="Role_ID")
-	@ManyToOne(fetch=FetchType.EAGER)
-	Role role;
+	@JsonIgnore
+	 @ManyToMany(cascade=CascadeType.ALL)
+	  @JoinTable( 
+	        name = "User_Roles", 
+	        joinColumns =@JoinColumn(name = "user_id", referencedColumnName = "id"), 
+	        inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")) 
+	    private List<Role> roles;
+
+	
+	
+	public User() {
+	}
+
+	
+	public User(String firstName, String lastName) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+
+	}
+
 
 	public long getId() {
-		return id;
+		return id; 
 	}
 
 	public void setId(long id) {
@@ -90,12 +119,12 @@ public class User {
 		this.image = image;
 	}
 
-	public Role getRole() {
-		return role;
+	public List<Role> getRoles() {
+		return roles;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	public boolean isEnabled() {
@@ -106,5 +135,12 @@ public class User {
 		this.enabled = enabled;
 	}
 
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password
+				+ ", email=" + email + ", image=" + image + ", enabled=" + enabled + ", roles=" + roles + "]";
+	}
+
+	
 	
 }

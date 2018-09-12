@@ -7,17 +7,17 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.example.medico.security.AuthenticationSuccess;
+import com.example.medico.serviceImpl.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 		@Autowired
-	    private UserDetailsService userDetailsService;
+	    private UserDetailsServiceImpl userDetailsService;
 		/*@Autowired
 		private AuthenticationFailure authenticationFailure;*/
 		@Autowired
@@ -26,8 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		@Bean
 		public BCryptPasswordEncoder encoder() {
 			return new BCryptPasswordEncoder();
-		}
-		
+		}		
 		
 	    @Override
 	    protected void configure(HttpSecurity http) throws Exception {

@@ -56,7 +56,7 @@ public class OperatorController {
 			return "redirect:/operator";
 		}
 		operator.setPassword(encoder.encode(operator.getPassword()));
-		operator.setRole(generalDao.findRoleOnName(Constants.ROLE_OPERATOR));
+		operator.getRoles().add(generalDao.findRoleOnName(Constants.ROLE_OPERATOR));
 		operator.setEnabled(true);
 		operatorDao.save(operator);
 		redirectAttributes.addFlashAttribute("success","Operator added successfully");

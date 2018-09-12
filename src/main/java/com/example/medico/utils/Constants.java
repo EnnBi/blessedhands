@@ -6,4 +6,6 @@ public interface Constants {
 	final static String ROLE_OPERATOR = "OPERATOR";
 	final static String ROLE_ADMIN = "ADMIN";
 	final static String ROLE_USER = "USER";
+	final static int ROWS = 10;
+	final static String PLACED = "Placed";
 }

@@ -18,6 +18,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="Medicine")
 public class Medicine {
@@ -39,6 +41,9 @@ public class Medicine {
 	@ManyToOne(fetch=FetchType.EAGER)
 	Unit unit;
 	
+	@Column(name="Dosage")
+	String dosage;
+	
 	@Column(name="Price")
 	Double price;
 	
@@ -46,10 +51,12 @@ public class Medicine {
 	@ManyToOne(fetch=FetchType.EAGER)
 	Type type;
 	
+	@JsonIgnore
 	@JoinColumn(name="Operator_ID")
 	@ManyToOne(fetch=FetchType.EAGER)
 	User operator;
 	
+	@JsonIgnore
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ElementCollection
 	@CollectionTable(name="Medicine_Images")
@@ -125,6 +132,20 @@ public class Medicine {
 
 	public void setImages(List<String> images) {
 		this.images = images;
+	}
+
+	public String getDosage() {
+		return dosage;
+	}
+
+	public void setDosage(String dosage) {
+		this.dosage = dosage;
+	}
+
+	@Override
+	public String toString() {
+		return "Medicine [id=" + id + ", name=" + name + ", description=" + description + ", company=" + company
+				+ ", unit=" + unit + ", dosage=" + dosage + ", price=" + price + ", type=" + type + "]";
 	}
 	
 	

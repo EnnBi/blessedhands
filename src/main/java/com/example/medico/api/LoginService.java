@@ -1,5 +1,6 @@
 package com.example.medico.api;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -24,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +38,7 @@ import com.example.medico.model.Role;
 import com.example.medico.model.User;
 import com.example.medico.security.TokenUtils;
 import com.example.medico.serviceImpl.UserDetailsServiceImpl;
+import com.example.medico.utils.CommonMethods;
 import com.example.medico.utils.Constants;
 import com.example.medico.utils.OnRegistrationCompleteEvent;
 
@@ -98,30 +100,63 @@ public class LoginService {
 	}
 	
 	@RequestMapping(value="/register",method=RequestMethod.POST)
-	public ResponseEntity<String> register(@RequestBody User user,HttpServletResponse response,HttpServletRequest request){
+	public ResponseEntity<?> register(@RequestBody User user,HttpServletResponse response,HttpServletRequest request){
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Role role = new Role();
 		role.setName(Constants.ROLE_USER);
-	
-		user.setEnabled(false);
-		user.setRoles(Arrays.asList(role));
-		User registered = userDao.save(user);
-
-		try {
-	        String appUrl = request.getContextPath();
-	        System.err.println(appUrl+"---appurl");
-	        eventPublisher.publishEvent(new OnRegistrationCompleteEvent
-	          (registered, request.getLocale(), appUrl));
-	       } catch (Exception me) {
-	    	   System.err.println("-------error in publishing--------");
-	    	   return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	    	
-	    /*	userService.deleteVer(registered);
-	    	userService.deleteUser(registered);
-	    	System.out.println(me);
-		    redirectAttributes.addFlashAttribute("fail","Email address cannot be verified or You are not connected to internet");*/
+		System.err.println("------sdcsds----------------");
+		System.err.println(user.getImage());
+		if(user.getLoginType() == 1) {
+			user.setEnabled(false);
+			user.setRoles(Arrays.asList(role));
+			if(userDao.findByEmail(user.getEmail())==null) {
+				User registered = userDao.save(user);
+			
+			try {
+		        String appUrl = request.getContextPath();
+		        System.err.println(appUrl+"---appurl");
+		        eventPublisher.publishEvent(new OnRegistrationCompleteEvent
+		          (registered, request.getLocale(), appUrl));
+		       } catch (Exception me) {
+		    	   System.err.println("-------error in publishing--------");
+		    	   userDao.delete(registered);
+		    	   System.out.println(me);
+		    	   return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		       }
+			}else {
+				return new ResponseEntity<>(HttpStatus.CONFLICT);
+			}
+			
 		}
-		return new ResponseEntity<>(JSONObject.quote("success"),HttpStatus.OK);
+		else if(user.getLoginType() > 1) {
+			System.err.println(user.getImage());
+			if(CommonMethods.saveImage(user.getImage(), new File(Constants.PATH+"/"+user.getEmail()+".jpg")))
+				user.setImage(user.getEmail()+".jpg");
+				user.setRoles(Arrays.asList(role));
+				user.setEnabled(true);
+				try {
+					if(userDao.findByEmail(user.getEmail()) == null) {
+						userDao.save(user);
+					}	
+					UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(user.getEmail());
+					String token = this.tokenUtils.generateToken(userDetails);
+
+					// Return the token
+					Token t = new Token();
+					t.setToken(token);
+					@SuppressWarnings("unchecked")
+					Iterator<GrantedAuthority> iterator = (Iterator<GrantedAuthority>) userDetails.getAuthorities().iterator();
+					while(iterator.hasNext()) {
+						t.getRole().add(iterator.next().getAuthority());
+					}
+					return new ResponseEntity<>(t, HttpStatus.OK);
+				} catch (Exception e) {
+					e.printStackTrace();
+			    	return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+				
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/images/{imageName:.+}", method = RequestMethod.GET)
@@ -151,10 +186,10 @@ public class LoginService {
 			System.out.println("Image " + imageName + " not present");
 		}
 	}
-	/*
+	
 	@ExceptionHandler
 	public void exception(Exception e) {
 		e.printStackTrace();
 	}
-*/
+
 }

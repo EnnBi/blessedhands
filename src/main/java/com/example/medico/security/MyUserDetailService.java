@@ -32,6 +32,7 @@ public class MyUserDetailService implements UserDetailsService {
 		for(Role role:user.getRoles())
 			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 		
+		System.err.println("in user setting authority-------");
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);	
      }
 

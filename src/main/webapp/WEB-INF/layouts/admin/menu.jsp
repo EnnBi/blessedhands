@@ -8,7 +8,7 @@ START - Mobile Menu
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 						<c:choose>
-							<c:when test="${sessionScope.user.role.name eq 'ADMIN'}">
+							<c:when test="${fn:contains(sessionScope.user.roles,ADMIN) }">
 								<c:set var="admin" value="true"/>
 							</c:when>
 							<c:otherwise>
@@ -211,14 +211,24 @@ START - Menu side
 							<div class="avatar-w"><img alt="" src="${pageContext.servletContext.contextPath}/resources/img/avatar.png"></div>
 							<div class="logged-user-info-w">
 								<div class="logged-user-name">${sessionScope.user.firstName} ${sessionScope.user.lastName}</div>
-								<div class="logged-user-role">${sessionScope.user.role.name}</div>
+								<c:if test="${fn:contains(sessionScope.user.roles,'ADMIN') }">
+									<div class="logged-user-role">ADMIN</div>
+								</c:if>
+								<c:if test="${fn:contains(sessionScope.user.roles,'OPERATOR') }">
+									<div class="logged-user-role">OPERATOR</div>
+								</c:if>
 							</div>
 							<div class="logged-user-menu">
 								<div class="logged-user-avatar-info">
 									<div class="avatar-w"><img alt="" src="${pageContext.servletContext.contextPath}/resources/img/avatar.png"></div>
 									<div class="logged-user-info-w">
 										<div class="logged-user-name">${sessionScope.user.firstName} ${sessionScope.user.lastName}</div>
-										<div class="logged-user-role">${sessionScope.user.role.name}</div>
+										<c:if test="${fn:contains(sessionScope.user.roles,'ADMIN') }">
+											<div class="logged-user-role">ADMIN</div>
+										</c:if>
+										<c:if test="${fn:contains(sessionScope.user.roles,'OPERATOR') }">
+											<div class="logged-user-role">OPERATOR</div>
+										</c:if>
 									</div>
 								</div>
 								<div class="bg-icon"><i class="os-icon os-icon-wallet-loaded"></i></div>
@@ -283,6 +293,22 @@ START - Menu side
 									<div class="os-icon os-icon-delivery-box-2"></div>
 								</div><span>Unit</span></a>
 						</li>
+						<c:if test="${admin}">
+							<li class="has-sub-menu">
+							<a href="#">
+								<div class="icon-w">
+									<div class="os-icon os-icon-newspaper"></div>
+								</div><span>Orders</span></a>
+							<ul class="sub-menu">
+								<li><a href="${pageContext.servletContext.contextPath}/orders">All Orders</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/orders?status=placed">Placed Orders</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/orders?status=confirmed">Confirmed Orders</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/orders?status=shipped">Shipped Orders</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/orders?status=delivered">Delivered Orders</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/orders?status=cancelled">Cancelled Orders</a></li>
+							</ul>
+						</li>
+						</c:if>
 				</div>
 			</div>
 			<!--------------------

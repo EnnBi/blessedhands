@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 public class RestAuthentication implements AuthenticationEntryPoint {
 
@@ -20,4 +21,8 @@ public class RestAuthentication implements AuthenticationEntryPoint {
 		
 	}
 
+	@ExceptionHandler
+	public void exception(Exception e) {
+		e.printStackTrace();
+	}
 }

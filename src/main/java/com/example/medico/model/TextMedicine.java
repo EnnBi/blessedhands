@@ -21,6 +21,9 @@ public class TextMedicine {
 	@Column(name="Dosage")
 	String dosage;
 
+	@Column(name="Price")
+	Double price;
+	
 	public long getId() {
 		return id;
 	}
@@ -51,6 +54,14 @@ public class TextMedicine {
 
 	public void setDosage(String dosage) {
 		this.dosage = dosage;
+	}
+	
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	@Override

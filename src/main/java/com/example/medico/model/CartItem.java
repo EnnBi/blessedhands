@@ -30,6 +30,9 @@ public class CartItem {
 	@Column(name="Quantity")
 	Long quantity;
 	
+	@Column(name="Available")
+	Boolean available;
+	
 	@JsonIgnore
 	@JoinColumn(name="Order_ID")
 	@ManyToOne(fetch=FetchType.EAGER)
@@ -39,6 +42,8 @@ public class CartItem {
 	@JoinColumn(name="User_ID")
 	@ManyToOne(fetch=FetchType.EAGER)
 	User user;
+	
+	
 	
 	public long getId() {
 		return id;
@@ -86,6 +91,14 @@ public class CartItem {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Boolean isAvailable() {
+		return available;
+	}
+
+	public void setAvailable(boolean available) {
+		this.available = available;
 	}
 	
 	

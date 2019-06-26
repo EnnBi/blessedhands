@@ -34,7 +34,7 @@ public class TokenUtils {
 			final Claims claims = this.getClaimsFromToken(token);
 			username = claims.getSubject();
 		} catch (Exception e) {
-			username = null;
+			username = null; 
 		}
 		return username;
 	}
@@ -152,6 +152,7 @@ public class TokenUtils {
 		final String username = this.getUsernameFromToken(token);
 		// final Date created = this.getCreatedDateFromToken(token);
 		// final Date expiration = this.getExpirationDateFromToken(token);
+		System.err.println("this token expire----"+this.isTokenExpired(token));
 		return (username.equals(user.getUsername()) && !(this.isTokenExpired(token)));
 	}
 

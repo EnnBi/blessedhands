@@ -37,7 +37,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         userDao.createVerificationToken(verificationToken);
         String recipientAddress = user.getEmail();
         String confirmationUrl ="/registrationConfirm?token=" + token;
-        String message ="http://localhost:8080" + confirmationUrl;
+        String message ="http://192.168.43.39:8080" + confirmationUrl;
         
         MimeMessage mailMessage = mailSender.createMimeMessage();
 		try {

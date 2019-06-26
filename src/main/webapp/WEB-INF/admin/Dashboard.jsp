@@ -12,7 +12,7 @@
 				<div class="content-i">
 					<div class="content-box">
 						<div class="element-wrapper">
-							<h6 class="element-header">List of Medicines submitted</h6>
+							<h6 class="element-header">List of Medicines Submitted</h6>
 							<div class="element-box">
 								<%-- <div class="controls-above-table">
 									<div class="row">

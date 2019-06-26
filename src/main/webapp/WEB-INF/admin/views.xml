@@ -43,4 +43,12 @@
        <put-attribute name="title" value="Dashboard" />  
        <put-attribute name="body" value="/WEB-INF/admin/Dashboard.jsp" />  
    </definition> 
+   <definition  name="orders" extends="admin-base">  
+       <put-attribute name="title" value="Dashboard" />  
+       <put-attribute name="body" value="/WEB-INF/admin/Orders.jsp" />  
+   </definition> 
+   <definition  name="order" extends="admin-base">  
+       <put-attribute name="title" value="Dashboard" />  
+       <put-attribute name="body" value="/WEB-INF/admin/Order.jsp" />  
+   </definition> 
 </tiles-definitions>

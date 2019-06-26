@@ -7,4 +7,5 @@ import com.example.medico.model.Medicine;
 
 public interface MedicineDao extends CrudRepository<Medicine, Long>,MedicineCustomDao {
 
+	
 }

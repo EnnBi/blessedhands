@@ -26,4 +26,52 @@
 	<script src="${pageContext.servletContext.contextPath}/resources/bower_components/bootstrap/js/dist/tooltip.js"></script>
 	<script src="${pageContext.servletContext.contextPath}/resources/bower_components/bootstrap/js/dist/popover.js"></script>
 	<script src="${pageContext.servletContext.contextPath}/resources/js/main.js"></script>
+	<script>
+	$('.itemAvailable').click(function(){
+		var ref = $(this);
+		if(ref.val()=='true'){
+			ref.parents('td').next().next().find('input').attr('required','required');
+			var quantity =ref.parents('td').next().text();
+			var price = ref.parents('td').next().next().text();
+			var total = Number(quantity)*Number(price);
+			ref.parents('td').next().next().next().find('input').val(total);
+		}
+		else{
+			ref.parents('td').next().next().next().find('input').val('');
+			ref.parents('td').next().next().find('input').removeAttr('required');
+		}
+		
+		grandTotal();
+	});
 	
+	$('.textMedicinePrice').change(function(){
+		var ref = $(this);
+		var quantity = ref.parents('td').prev().text();
+		var total = Number(ref.val())*Number(quantity);
+		ref.parents('td').next().find('input').val(total);
+		grandTotal();
+	})
+	
+	function grandTotal(){
+		var sum=0;
+		$("table tr td:last-child").each(function(i){
+			if(!($(this).find('input').attr('name') == 'total')){
+				sum = sum+Number($(this).find('input').val());
+			}
+			else
+				$(this).find('input').val(sum);
+		});
+		
+	}
+	
+	$('#confirmship').click(function(e){
+		console.log($('#deliveredUser').val()+"----");
+		if($('#deliveredUser').val() == ""){
+			alert("Please select Delivering User")
+			e.preventDefault();
+			return false;
+		}
+			
+	});
+
+	</script>

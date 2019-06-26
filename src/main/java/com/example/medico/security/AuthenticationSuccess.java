@@ -36,7 +36,7 @@ public class AuthenticationSuccess implements AuthenticationSuccessHandler{
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, 
       HttpServletResponse response, Authentication authentication) throws IOException {
-    	System.out.println("now i will redirect u");
+    	System.out.println("now i will redirect u----"+authentication.getPrincipal());
         handle(request, response, authentication);
         clearAuthenticationAttributes(request);
     }
@@ -58,13 +58,13 @@ public class AuthenticationSuccess implements AuthenticationSuccessHandler{
         boolean isOperator= false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
-            if (grantedAuthority.getAuthority().equals(Constants.ROLE_OPERATOR)) {
+            if (grantedAuthority.getAuthority().contains(Constants.ROLE_OPERATOR)) {
             	isOperator = true;
             	break;
-            } else if (grantedAuthority.getAuthority().equals(Constants.ROLE_ADMIN)) {
+            } else if (grantedAuthority.getAuthority().contains(Constants.ROLE_ADMIN)) {
                 isAdmin = true;
                 break;
-            } else if (grantedAuthority.getAuthority().equals(Constants.ROLE_USER)) {
+            } else if (grantedAuthority.getAuthority().contains(Constants.ROLE_USER)) {
             	 isUser = true;
                 break;
             }

@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.medico.api.model.LoginUser;
 import com.example.medico.api.model.Token;
+import com.example.medico.dao.RoleDao;
 import com.example.medico.dao.UserDao;
 import com.example.medico.model.Role;
 import com.example.medico.model.User;
@@ -64,6 +65,8 @@ public class LoginService {
 	
 	@Autowired
 	UserDao userDao;
+	@Autowired
+	RoleDao roleDao;
 	
 	@Autowired
 	TokenUtils tokenUtils;
@@ -102,12 +105,10 @@ public class LoginService {
 	@RequestMapping(value="/register",method=RequestMethod.POST)
 	public ResponseEntity<?> register(@RequestBody User user,HttpServletResponse response,HttpServletRequest request){
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		Role role = new Role();
-		role.setName(Constants.ROLE_USER);
-		System.err.println("------sdcsds----------------");
+		Role role = roleDao.findByName(Constants.ROLE_USER);
 		System.err.println(user.getImage());
 		if(user.getLoginType() == 1) {
-			user.setEnabled(false);
+			user.setEnabled(false);    
 			user.setRoles(Arrays.asList(role));
 			if(userDao.findByEmail(user.getEmail())==null) {
 				User registered = userDao.save(user);
